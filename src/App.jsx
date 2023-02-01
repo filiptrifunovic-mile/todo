@@ -8,6 +8,7 @@ import {
   onSnapshot,
   updateDoc,
   doc,
+  addDoc,
 } from "firebase/firestore";
 
 const style = {
@@ -22,8 +23,23 @@ const style = {
 
 function App() {
   const [todos, setTodos] = useState([]);
+  const [input, setInput] = useState("");
 
   // create todo
+
+  const createTodo = async (e) => {
+    e.preventDefault();
+
+    if (input === "") return alert("Please enter a valid text");
+
+    await addDoc(collection(db, "todos"), {
+      text: input,
+      completed: false,
+    });
+
+    setInput("");
+  };
+
   // read todo
   useEffect(() => {
     const q = query(collection(db, "todos"));
@@ -48,8 +64,14 @@ function App() {
     <div className={style.bg}>
       <div className={style.container}>
         <h3 className={style.heading}>Todo app</h3>
-        <form className={style.form}>
-          <input type="text" placeholder="Add todo" className={style.input} />
+        <form className={style.form} onSubmit={createTodo}>
+          <input
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            type="text"
+            placeholder="Add todo"
+            className={style.input}
+          />
           <button className={style.button}>
             <AiOutlinePlus size={30} />
           </button>
