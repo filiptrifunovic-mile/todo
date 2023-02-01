@@ -1,10 +1,18 @@
 import { AiOutlinePlus } from "react-icons/ai";
+import React, { useState } from "react";
+import Todo from "./Todo";
 
 const style = {
   bg: `h-screen w-screen p-4 bg-gradient-to-r from-[#2F80ED] to-[#1CB5E0]`,
 };
 
 function App() {
+  const [todos, setTodos] = useState([
+    "Feed the cat",
+    "Love the cat",
+    "Cat is awsome",
+  ]);
+
   return (
     <div className={style.bg}>
       <div className={style.container}>
@@ -15,7 +23,12 @@ function App() {
             <AiOutlinePlus size={30} />
           </button>
         </form>
-        <ul></ul>
+        <ul>
+          {todos.map((todo, index) => (
+            <Todo key={index} todo={todo} />
+          ))}
+        </ul>
+        <p className={style.count}>You have 3 todos</p>
       </div>
     </div>
   );
